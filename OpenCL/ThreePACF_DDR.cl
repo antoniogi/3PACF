@@ -38,7 +38,7 @@ __kernel
 __attribute((num_simd_work_items(SIMD_WORK_ITEMS)))
 __attribute((work_group_size_hint(max_group_size, 1, 1)))
 __attribute((max_work_group_size(max_group_size)))
-void DRR (__constant double *restrict xd1, __constant double *restrict yd1, __constant double *restrict zd1, __constant double *restrict xd2, __constant double *restrict yd2, __constant double *restrict zd2, __global int *restrict output, int numberlines, int start)
+void DDR (__constant double *restrict xd1, __constant double *restrict yd1, __constant double *restrict zd1, __constant double *restrict xd2, __constant double *restrict yd2, __constant double *restrict zd2, __global int *restrict output, int numberlines, int start)
 {
   int i,j,k;
   int jj,kk;
