@@ -43,9 +43,9 @@ void DRR (__constant double *restrict xd1, __constant double *restrict yd1, __co
   int i,j,k;
   int jj,kk;
 
-  //Make this private instead of local
-
   __local int local_output[max_group_size][hist_size];
+
+  //Currently we can only process up to 10000 lines
   __local double local_xd1[10000];
   __local double local_yd1[10000];
   __local double local_zd1[10000];
@@ -81,10 +81,6 @@ void DRR (__constant double *restrict xd1, __constant double *restrict yd1, __co
     ang12 = convert_float(local_xd1[globalelem]*local_xd2[jj] + local_yd1[globalelem]*local_yd2[jj] + local_zd1[globalelem]*local_zd2[jj]);
     ang12 = min (ang12 , 0.99999999);
 
-#ifdef _DEBUG
-    printf ("ang12 %f\n", ang12);
-#endif
-
     if (ang12 < min_cos)
       continue;
 
@@ -114,11 +110,10 @@ void DRR (__constant double *restrict xd1, __constant double *restrict yd1, __co
     } 
   }
 
-
-    const int pos = get_local_id(0);
-    #pragma unroll hist_size
-    for (i=0; i<hist_size; ++i) {
-      atomic_add (&output[i], local_output[pos][i]);
-    }
+  const int pos = get_local_id(0);
+  #pragma unroll hist_size
+  for (i=0; i<hist_size; ++i) {
+    atomic_add (&output[i], local_output[pos][i]);
+  }
 }
 

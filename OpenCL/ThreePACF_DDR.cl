@@ -43,8 +43,6 @@ void DRR (__constant double *restrict xd1, __constant double *restrict yd1, __co
   int i,j,k;
   int jj,kk;
 
-  //Make this private instead of local
-
   __local int local_output[max_group_size][hist_size];
   __local double local_xd1[10000];
   __local double local_yd1[10000];
@@ -80,10 +78,6 @@ void DRR (__constant double *restrict xd1, __constant double *restrict yd1, __co
     int bin12, bin23, bin31;
     ang12 = convert_float(local_xd1[globalelem]*local_xd1[jj] + local_yd1[globalelem]*local_yd1[jj] + local_zd1[globalelem]*local_zd1[jj]);
     ang12 = min (ang12 , 0.99999999);
-
-#ifdef _DEBUG
-    printf ("ang12 %f\n", ang12);
-#endif
 
     if (ang12 < min_cos)
       continue;
